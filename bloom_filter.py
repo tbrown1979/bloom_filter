@@ -20,14 +20,15 @@ class HashGenerator:
 class BloomFilter:
 
     def __init__(self, c=0.01, n=1000, m=None):
+        self.amtOfItems = 0
         self.falsePosRate = c
         self.numOfKeys = n
         if m == None:
-            self.vectorLength, self.numOfHashes = self._calculateBloomFilterSettings()
+            self.length, self.numOfHashes = self._calculateBloomFilterSettings()
         else:
-            self.vectorLength = m
+            self.length = m
             self.numOfHashes = self._getNumHashesWithFixedM(m, n)
-        self.bFilter = self._createFreshFilter(int(self.vectorLength))
+        self.bFilter = self._createFreshFilter(int(self.length))
         self.hashes = self._generateHashes()
 
     def lookup(self, item):
@@ -40,8 +41,12 @@ class BloomFilter:
         return found
 
     def add(self, item):
+        self.amtOfItems += 1
         bitsToFlip = self._hashItem(item)
         self.__flipBits(bitsToFlip)
+
+    def addByList(self, listOfItems):
+        [self.add(item) for item in listOfItems]
 
     def _hashItem(self, item):
         return [f(item) for f in self.hashes]
@@ -50,7 +55,7 @@ class BloomFilter:
         generator = HashGenerator()
         hashes = []
         for i in xrange(int(self.numOfHashes)):
-            hashes.append(generator.generateHash(self.vectorLength))
+            hashes.append(generator.generateHash(self.length))
         return hashes
 
     def _createFreshFilter(self, m):

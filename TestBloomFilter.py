@@ -11,10 +11,10 @@ class TestBloomFilter(unittest.TestCase):
         self.smallFilter = BloomFilter(n=5, m=10)
 
     def test_vector_length(self):
-        self.assertEqual(self.bloomFilter.vectorLength, self.bloomFilterLength)
+        self.assertEqual(self.bloomFilter.length, self.bloomFilterLength)
 
     def test_small_vector_length(self):
-        self.assertEqual(self.smallFilter.vectorLength, 10)
+        self.assertEqual(self.smallFilter.length, 10)
 
     def test_num_of_hashes(self):
         self.assertEqual(self.bloomFilter.numOfHashes, 7)
@@ -56,6 +56,10 @@ class TestBloomFilter(unittest.TestCase):
 
     def test_that_lookups_can_fail(self):
         self.assertFalse(self.bloomFilter.lookup(5))
+
+    def test_add_list(self):
+        self.bloomFilter.add(range(1,1001))
+        self.assertEquals(self.bloomFilter
 
 class TestHashGenerator(unittest.TestCase):
 
