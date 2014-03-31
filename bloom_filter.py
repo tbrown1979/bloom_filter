@@ -9,8 +9,9 @@ class HashGenerator:
         self.salt = "salty"
 
     def generateHash(self, m):
+        unique = self.uniqueKey
         def hashFunction(item):
-            hashed = sha1(str(self.uniqueKey) + self.salt + str(item)).hexdigest()
+            hashed = sha1(str(unique) + self.salt + str(item)).hexdigest()
             num = int(hashed[0:8], 16) % m
             return int(num)
         self.uniqueKey += 1
@@ -42,12 +43,6 @@ class BloomFilter:
         bitsToFlip = self._hashItem(item)
         self.__flipBits(bitsToFlip)
 
-    def __flipBits(self, bitsToFlip):
-        [self.__flipBit(int(i)) for i in bitsToFlip]
-
-    def __flipBit(self, bitIndex):
-        self.bFilter[bitIndex] = 1
-
     def _hashItem(self, item):
         return [f(item) for f in self.hashes]
 
@@ -77,3 +72,8 @@ class BloomFilter:
                 bestK = num
         return (ceil(lowestM), bestK)
 
+    def __flipBits(self, bitsToFlip):
+        [self.__flipBit(int(i)) for i in bitsToFlip]
+
+    def __flipBit(self, bitIndex):
+        self.bFilter[bitIndex] = 1

@@ -45,6 +45,18 @@ class TestBloomFilter(unittest.TestCase):
         self.bloomFilter.add("test")
         self.assertTrue(self.bloomFilter.lookup("test"))
 
+    def test_hashing_item(self):
+        self.assertEquals(self.bloomFilter._hashItem("test"), [499, 721, 821, 4285, 8380, 6476, 6847])
+
+    def test_correct_lookups(self):
+        for i in xrange(100):
+            self.bloomFilter.add(i)
+        for i in xrange(100):
+            self.assertTrue(self.bloomFilter.lookup(i))
+
+    def test_that_lookups_can_fail(self):
+        self.assertFalse(self.bloomFilter.lookup(5))
+
 class TestHashGenerator(unittest.TestCase):
 
     def setUp(self):
