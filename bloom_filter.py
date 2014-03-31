@@ -1,6 +1,6 @@
 from hashlib import sha1
+from array import array
 from math import *
-
 
 class HashGenerator:
 
@@ -26,7 +26,13 @@ class BloomFilter:
         else:
             self.vectorLength = m
             self.numOfHashes = self._getNumHashesWithFixedM(m, n)
+        bFilter = self._createFreshFilter(int(self.vectorLength))
 
+    def _createFreshFilter(self, m):
+        freshFilter = array('b')
+        for i in xrange(m):
+            freshFilter.append(0)
+        return freshFilter
 
     def _getNumHashesWithFixedM(self, m, n):
         return ceil(log(2) * m / n)
@@ -41,7 +47,3 @@ class BloomFilter:
                 bestK = num
         return (ceil(lowestM), bestK)
 
-
-test = BloomFilter()
-print test.numOfKeys
-print test.vectorLength
