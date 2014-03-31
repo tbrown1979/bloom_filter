@@ -40,7 +40,10 @@ class TestBloomFilter(unittest.TestCase):
     def test_adding_item(self):
         self.bloomFilter.add("test")
         self.assertTrue(self.bloomFilter.bFilter.count(1),1)
-    # def test
+
+    def test_looking_up_item(self):
+        self.bloomFilter.add("test")
+        self.assertTrue(self.bloomFilter.lookup("test"))
 
 class TestHashGenerator(unittest.TestCase):
 

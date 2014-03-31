@@ -12,7 +12,7 @@ class HashGenerator:
         def hashFunction(item):
             hashed = sha1(str(self.uniqueKey) + self.salt + str(item)).hexdigest()
             num = int(hashed[0:8], 16) % m
-            return num
+            return int(num)
         self.uniqueKey += 1
         return hashFunction
 
@@ -29,8 +29,17 @@ class BloomFilter:
         self.bFilter = self._createFreshFilter(int(self.vectorLength))
         self.hashes = self._generateHashes()
 
+    def lookup(self, item):
+        indexes = self._hashItem(item)
+        found = True
+        for i in indexes:
+            if self.bFilter[i] == 0:
+                found = False
+                break
+        return found
+
     def add(self, item):
-        bitsToFlip = [f(item) for f in self.hashes]
+        bitsToFlip = self._hashItem(item)
         self.__flipBits(bitsToFlip)
 
     def __flipBits(self, bitsToFlip):
@@ -38,6 +47,9 @@ class BloomFilter:
 
     def __flipBit(self, bitIndex):
         self.bFilter[bitIndex] = 1
+
+    def _hashItem(self, item):
+        return [f(item) for f in self.hashes]
 
     def _generateHashes(self):
         generator = HashGenerator()
