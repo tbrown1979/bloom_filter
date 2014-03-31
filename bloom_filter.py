@@ -9,9 +9,9 @@ class HashGenerator:
         self.salt = "salty"
 
     def generateHash(self, m):
-        def hashFunction():
-            hashed = sha1(str(self.uniqueKey) + self.salt).hexdigest()
-            num = int(hashed[0:9], 16) % m
+        def hashFunction(item):
+            hashed = sha1(str(self.uniqueKey) + self.salt + str(item)).hexdigest()
+            num = int(hashed[0:8], 16) % m
             return num
         self.uniqueKey += 1
         return hashFunction
@@ -28,6 +28,16 @@ class BloomFilter:
             self.numOfHashes = self._getNumHashesWithFixedM(m, n)
         self.bFilter = self._createFreshFilter(int(self.vectorLength))
         self.hashes = self._generateHashes()
+
+    def add(self, item):
+        bitsToFlip = [f(item) for f in self.hashes]
+        self.__flipBits(bitsToFlip)
+
+    def __flipBits(self, bitsToFlip):
+        [self.__flipBit(int(i)) for i in bitsToFlip]
+
+    def __flipBit(self, bitIndex):
+        self.bFilter[bitIndex] = 1
 
     def _generateHashes(self):
         generator = HashGenerator()

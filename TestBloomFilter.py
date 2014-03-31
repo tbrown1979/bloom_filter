@@ -36,6 +36,10 @@ class TestBloomFilter(unittest.TestCase):
 
     def test_small_filter_hashes_length(self):
         self.assertEqual(len(self.smallFilter.hashes), 2)
+
+    def test_adding_item(self):
+        self.bloomFilter.add("test")
+        self.assertTrue(self.bloomFilter.bFilter.count(1),1)
     # def test
 
 class TestHashGenerator(unittest.TestCase):
@@ -44,7 +48,7 @@ class TestHashGenerator(unittest.TestCase):
         self.generator = HashGenerator()
 
     def test_that_returned_function_generates_value(self):
-        self.assertLess(self.generator.generateHash(1000)(), 1001), 
+        self.assertLess(self.generator.generateHash(1000)(1), 1001), 
 
 if __name__ == '__main__':
     unittest.main()
