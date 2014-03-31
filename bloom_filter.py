@@ -26,7 +26,7 @@ class BloomFilter:
         else:
             self.vectorLength = m
             self.numOfHashes = self._getNumHashesWithFixedM(m, n)
-        bFilter = self._createFreshFilter(int(self.vectorLength))
+        self.bFilter = self._createFreshFilter(int(self.vectorLength))
 
     def _createFreshFilter(self, m):
         freshFilter = array('b')

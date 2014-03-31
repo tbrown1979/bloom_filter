@@ -1,15 +1,17 @@
 import random
 import unittest
 from bloom_filter import *
+from array import array
 
 class TestBloomFilter(unittest.TestCase):
 
     def setUp(self):
         self.bloomFilter = BloomFilter()
-        self.smallFilter = BloomFilter(m=10)
+        self.bloomFilterLength = 9593
+        self.smallFilter = BloomFilter(n=5, m=10)
 
     def test_vector_length(self):
-        self.assertEqual(self.bloomFilter.vectorLength, 9593)
+        self.assertEqual(self.bloomFilter.vectorLength, self.bloomFilterLength)
 
     def test_small_vector_length(self):
         self.assertEqual(self.smallFilter.vectorLength, 10)
@@ -17,11 +19,17 @@ class TestBloomFilter(unittest.TestCase):
     def test_num_of_hashes(self):
         self.assertEqual(self.bloomFilter.numOfHashes, 7)
 
-    def test_small_filter_hashes(self):
-        self.assertEqual(self.smallFilter.numOfHashes, 1)
+    def test_small_filter_hashes(self):#2 because we take the ceil
+        self.assertEqual(self.smallFilter.numOfHashes, 2)
 
     def test_num_of_hashes_fixed_m(self):
-        self.assertEqual(self.bloomFilter._getNumHashesWithFixedM(9593, 1000), 7)
+        self.assertEqual(self.bloomFilter._getNumHashesWithFixedM(self.bloomFilterLength, 1000), 7)
+
+    def test_small_filter_array(self):
+        self.assertEqual(self.smallFilter.bFilter, array('b', [0]*10))
+
+    def test_large_filter_array(self):
+        self.assertEqual(self.bloomFilter.bFilter, array('b', [0]*self.bloomFilterLength))
 
 
     # def test
