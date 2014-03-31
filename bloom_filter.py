@@ -27,6 +27,14 @@ class BloomFilter:
             self.vectorLength = m
             self.numOfHashes = self._getNumHashesWithFixedM(m, n)
         self.bFilter = self._createFreshFilter(int(self.vectorLength))
+        self.hashes = self._generateHashes()
+
+    def _generateHashes(self):
+        generator = HashGenerator()
+        hashes = []
+        for i in xrange(int(self.numOfHashes)):
+            hashes.append(generator.generateHash(self.vectorLength))
+        return hashes
 
     def _createFreshFilter(self, m):
         freshFilter = array('b')

@@ -31,7 +31,11 @@ class TestBloomFilter(unittest.TestCase):
     def test_large_filter_array(self):
         self.assertEqual(self.bloomFilter.bFilter, array('b', [0]*self.bloomFilterLength))
 
+    def test_hashes_length(self):
+        self.assertEqual(len(self.bloomFilter.hashes), 7)
 
+    def test_small_filter_hashes_length(self):
+        self.assertEqual(len(self.smallFilter.hashes), 2)
     # def test
 
 class TestHashGenerator(unittest.TestCase):
