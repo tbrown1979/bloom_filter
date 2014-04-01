@@ -48,7 +48,6 @@ def testFalsePositiveRate(testSet, bloomFilter):
     for item in testSet:
         if bloomFilter.lookup(item):
             amtTrue += 1
-    print length
     return (round(amtTrue/length, 10) * 100, amtTrue)
 
 
