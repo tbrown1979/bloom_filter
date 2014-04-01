@@ -17,31 +17,6 @@ class DemoSetGenerator:
         return list(mSet)
 
 
-def bloomFilterDemo():
-    setGenerator = DemoSetGenerator()
-    membershipSet = setGenerator.membershipSet
-    testSet = setGenerator.testSet
-
-    bloomFilter = BloomFilter(n=10000)
-    bloomFilter.addByList(membershipSet)
-    test = testFalsePositiveRate(testSet, bloomFilter)
-    print "False Positive Rate at 1% resulted in:", str(test[0]) + "%"
-    print "Collisions at 1%:", test[1]
-    print
-
-    bloomFilter = BloomFilter(c=.001, n=10000)
-    bloomFilter.addByList(membershipSet)
-    test = testFalsePositiveRate(testSet, bloomFilter)
-    print "False Positive Rate at .1% resulted in:", str(test[0]) + "%"
-    print "Collisions at .1%:", test[1]
-    print
-
-    bloomFilter = BloomFilter(c=.0001, n=10000)
-    bloomFilter.addByList(membershipSet)
-    test = testFalsePositiveRate(testSet, bloomFilter)
-    print "False Positive Rate at .01% resulted in:", str(test[0]) + "%"
-    print "Collisions at .01%:", test[1]
-
 def testFalsePositiveRate(testSet, bloomFilter):
     length = len(testSet)
     amtTrue = 0.0
@@ -49,6 +24,41 @@ def testFalsePositiveRate(testSet, bloomFilter):
         if bloomFilter.lookup(item):
             amtTrue += 1
     return (round(amtTrue/length, 10) * 100, amtTrue)
+
+def reportTest(c, n, memSet, testSet, m=None):
+    bloomFilter = BloomFilter(c=c, n=n, m=m)
+    bloomFilter.addByList(memSet)
+    test = testFalsePositiveRate(testSet, bloomFilter)
+    print "False Positive Rate at " + str(c * 100) + "% resulted in:", str(test[0]) + "%"
+    print "Collisions at " + str(c * 100) + "%:", test[1]
+
+def bloomFilterDemo():
+    setGenerator = DemoSetGenerator()
+    membershipSet = setGenerator.membershipSet
+    testSet = setGenerator.testSet
+    length = len(membershipSet)
+
+    reportTest(.01, length, membershipSet, testSet)
+    reportTest(.001, length, membershipSet, testSet)
+    reportTest(.0001, length, membershipSet, testSet)
+    print "-------------------------------------------------------------------"
+
+    print "Vector size of 1.5n"
+    reportTest(.01, length, membershipSet, testSet, len(membershipSet) * 1.5)
+    reportTest(.001, length, membershipSet, testSet, len(membershipSet) * 1.5)
+    reportTest(.0001, length, membershipSet, testSet, len(membershipSet) * 1.5)
+    print "-------------------------------------------------------------------"
+    print "Vector size of .75n"
+    reportTest(.01, length, membershipSet, testSet, len(membershipSet) * .75)
+    reportTest(.001, length, membershipSet, testSet, len(membershipSet) * .75)
+    reportTest(.0001, length, membershipSet, testSet, len(membershipSet) * .75)    
+    print "-------------------------------------------------------------------"
+    print "Vector size of .5n"
+    reportTest(.01, length, membershipSet, testSet, len(membershipSet) * .5)
+    reportTest(.001, length, membershipSet, testSet, len(membershipSet) * .5)
+    reportTest(.0001, length, membershipSet, testSet, len(membershipSet) * .5)    
+    print "-------------------------------------------------------------------"
+
 
 
 bloomFilterDemo()
