@@ -8,10 +8,13 @@ class TestBloomFilter(unittest.TestCase):
     def setUp(self):
         self.bloomFilter = BloomFilter()
         self.bloomFilterLength = 9593
-        # self.smallFilter = BloomFilter(n=5, m=10)
+        self.largeBloomFilter = BloomFilter(multiplier=1.5)
 
     def test_vector_length(self):
         self.assertEqual(self.bloomFilter.length, self.bloomFilterLength)
+
+    def test_vector_length_with_multiplier(self):
+        self.assertEqual(self.largeBloomFilter.length, self.bloomFilterLength * 1.5)
 
     def test_num_of_hashes(self):
         self.assertEqual(self.bloomFilter.numOfHashes, 7)

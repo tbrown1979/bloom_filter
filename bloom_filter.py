@@ -22,11 +22,12 @@ class HashGenerator:
 
 class BloomFilter:
 
-    def __init__(self, c=0.01, n=1000, m=1):
+    def __init__(self, c=0.01, n=1000, multiplier=1):
         self.amtOfItems = 0
         self.falsePosRate = c
         self.numOfKeys = n
         self.length, self.numOfHashes = self._calculateBloomFilterSettings()
+        self.length = self.length * multiplier
         self.bFilter = self._createFreshFilter(int(self.length))
         self.hashes = self._generateHashes()
 
