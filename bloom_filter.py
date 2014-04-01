@@ -1,6 +1,7 @@
 from hashlib import sha1
 from array import array
 from math import *
+from random import shuffle
 
 class HashGenerator:
 
@@ -10,8 +11,11 @@ class HashGenerator:
 
     def generateHash(self, m):
         unique = self.uniqueKey
+        randSalt = list("this will be random")
+        shuffle(randSalt)
+        randSalt = ''.join(randSalt)
         def hashFunction(item):
-            hashed = sha1(str(unique) + self.salt + str(item)).hexdigest()
+            hashed = sha1(str(unique) + randSalt + str(item)).hexdigest()
             num = int(hashed[0:8], 16) % m
             return int(num)
         self.uniqueKey += 1
@@ -65,7 +69,8 @@ class BloomFilter:
         return freshFilter
 
     def _getNumHashesWithFixedM(self, m, n):
-        return ceil(log(2) * m / n)
+        output = ceil(log(2) * m / n)
+        return output
 
     def _calculateBloomFilterSettings(self):
         bestK = 1
