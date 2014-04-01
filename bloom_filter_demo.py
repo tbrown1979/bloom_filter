@@ -1,5 +1,6 @@
 from sets import Set 
 from random import randint
+from bloom_filter import *
 
 class DemoSetGenerator:
 
@@ -18,9 +19,16 @@ class DemoSetGenerator:
 
 def bloomFilterDemo():
     setGenerator = DemoSetGenerator()
+    membershipSet = setGenerator.membershipSet
+    testSet = setGenerator.testSet
 
+    bloomFilter = BloomFilter(n=10000)
+    bloomFilter.addByList(membershipSet)
 
-def fillBloomFilterWith(bloomFilter, listOfItems):
-    
+def testFalsePositiveRate(testSet, bloomFilter):
+    length = len(testSet)
+    for item in testSet:
+        return
+
 
 bloomFilterDemo()

@@ -58,8 +58,8 @@ class TestBloomFilter(unittest.TestCase):
         self.assertFalse(self.bloomFilter.lookup(5))
 
     def test_add_list(self):
-        self.bloomFilter.add(range(1,1001))
-        self.assertEquals(self.bloomFilter
+        self.bloomFilter.addByList(range(1,1001))
+        self.assertEquals(self.bloomFilter.amtOfItems, 1000)
 
 class TestHashGenerator(unittest.TestCase):
 
