@@ -71,7 +71,7 @@ class BloomFilter:
         bestK = 1
         lowestM = None
         for num in xrange(1,101):
-            m = (-1.0 * num * self.numOfKeys) / (log( 1 - (.01 ** (1.0/num))))
+            m = (-1.0 * num * self.numOfKeys) / (log( 1 - (self.falsePosRate ** (1.0/num))))
             if m < lowestM or lowestM == None:
                 lowestM = m
                 bestK = num
