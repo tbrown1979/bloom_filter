@@ -75,7 +75,6 @@ class BloomFilter:
             if m < lowestM or lowestM == None:
                 lowestM = m
                 bestK = num
-        print (ceil(lowestM), bestK)
         return (ceil(lowestM), bestK)
 
     def __flipBits(self, bitsToFlip):

@@ -12,7 +12,7 @@ class DemoSetGenerator:
 
     def generateUniqueList(self, maxLen, m, n):
         mSet = Set([])
-        while len(mSet) <= maxLen:
+        while len(mSet) < maxLen:
             mSet.add(randint(m, n))
         return list(mSet)
 
@@ -24,13 +24,23 @@ def bloomFilterDemo():
 
     bloomFilter = BloomFilter(n=10000)
     bloomFilter.addByList(membershipSet)
-    print "False Positive Rate at 1%:", testFalsePositiveRate(testSet, bloomFilter)
+    test = testFalsePositiveRate(testSet, bloomFilter)
+    print "False Positive Rate at 1% resulted in:", str(test[0]) + "%"
+    print "Collisions at 1%:", test[1]
+    print
 
-    bloomFilterF = BloomFilter(c=.001, n=10000)
-    bloomFilterF.addByList(membershipSet)
-    print "False Positive Rate at .1%:", testFalsePositiveRate(testSet, bloomFilterF)
+    bloomFilter = BloomFilter(c=.001, n=10000)
+    bloomFilter.addByList(membershipSet)
+    test = testFalsePositiveRate(testSet, bloomFilter)
+    print "False Positive Rate at .1% resulted in:", str(test[0]) + "%"
+    print "Collisions at .1%:", test[1]
+    print
 
-
+    bloomFilter = BloomFilter(c=.0001, n=10000)
+    bloomFilter.addByList(membershipSet)
+    test = testFalsePositiveRate(testSet, bloomFilter)
+    print "False Positive Rate at .01% resulted in:", str(test[0]) + "%"
+    print "Collisions at .01%:", test[1]
 
 def testFalsePositiveRate(testSet, bloomFilter):
     length = len(testSet)
@@ -38,7 +48,8 @@ def testFalsePositiveRate(testSet, bloomFilter):
     for item in testSet:
         if bloomFilter.lookup(item):
             amtTrue += 1
-    return amtTrue/length #round(amtTrue/length, 5)
+    print length
+    return (round(amtTrue/length, 10) * 100, amtTrue)
 
 
 bloomFilterDemo()
