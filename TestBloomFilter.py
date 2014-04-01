@@ -61,6 +61,9 @@ class TestBloomFilter(unittest.TestCase):
         self.bloomFilter.addByList(range(1,1001))
         self.assertEquals(self.bloomFilter.amtOfItems, 1000)
 
+    def test_calcutlating_k_and_m(self):
+        self.assertEquals(self.bloomFilter._calculateBloomFilterSettings(), (9593.0, 7))
+
 class TestHashGenerator(unittest.TestCase):
 
     def setUp(self):

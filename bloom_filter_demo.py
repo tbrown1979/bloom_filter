@@ -28,7 +28,7 @@ def bloomFilterDemo():
 
     bloomFilterF = BloomFilter(c=.001, n=10000)
     bloomFilterF.addByList(membershipSet)
-    print "False Positive Rate at .1%", testFalsePositiveRate(testSet, bloomFilterF)
+    print "False Positive Rate at .1%:", testFalsePositiveRate(testSet, bloomFilterF)
 
 
 
