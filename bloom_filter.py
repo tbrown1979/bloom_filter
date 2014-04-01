@@ -22,15 +22,11 @@ class HashGenerator:
 
 class BloomFilter:
 
-    def __init__(self, c=0.01, n=1000, m=None):
+    def __init__(self, c=0.01, n=1000, m=1):
         self.amtOfItems = 0
         self.falsePosRate = c
         self.numOfKeys = n
-        if m == None:
-            self.length, self.numOfHashes = self._calculateBloomFilterSettings()
-        else:
-            self.length = m
-            self.numOfHashes = self._getNumHashesWithFixedM(m, n)
+        self.length, self.numOfHashes = self._calculateBloomFilterSettings()
         self.bFilter = self._createFreshFilter(int(self.length))
         self.hashes = self._generateHashes()
 
@@ -67,9 +63,9 @@ class BloomFilter:
             freshFilter.append(0)
         return freshFilter
 
-    def _getNumHashesWithFixedM(self, m, n):
-        output = ceil(log(2) * m / n)
-        return output
+    # def _getNumHashesWithFixedM(self, m, n):
+    #     output = ceil(log(2) * m / n)
+    #     return output
 
     def _calculateBloomFilterSettings(self):
         bestK = 1

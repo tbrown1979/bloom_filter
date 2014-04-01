@@ -8,34 +8,19 @@ class TestBloomFilter(unittest.TestCase):
     def setUp(self):
         self.bloomFilter = BloomFilter()
         self.bloomFilterLength = 9593
-        self.smallFilter = BloomFilter(n=5, m=10)
+        # self.smallFilter = BloomFilter(n=5, m=10)
 
     def test_vector_length(self):
         self.assertEqual(self.bloomFilter.length, self.bloomFilterLength)
 
-    def test_small_vector_length(self):
-        self.assertEqual(self.smallFilter.length, 10)
-
     def test_num_of_hashes(self):
         self.assertEqual(self.bloomFilter.numOfHashes, 7)
-
-    def test_small_filter_hashes(self):#2 because we take the ceil
-        self.assertEqual(self.smallFilter.numOfHashes, 2)
-
-    def test_num_of_hashes_fixed_m(self):
-        self.assertEqual(self.bloomFilter._getNumHashesWithFixedM(self.bloomFilterLength, 1000), 7)
-
-    def test_small_filter_array(self):
-        self.assertEqual(self.smallFilter.bFilter, array('b', [0]*10))
 
     def test_large_filter_array(self):
         self.assertEqual(self.bloomFilter.bFilter, array('b', [0]*self.bloomFilterLength))
 
     def test_hashes_length(self):
         self.assertEqual(len(self.bloomFilter.hashes), 7)
-
-    def test_small_filter_hashes_length(self):
-        self.assertEqual(len(self.smallFilter.hashes), 2)
 
     def test_adding_item(self):
         self.bloomFilter.add("test")
@@ -44,9 +29,6 @@ class TestBloomFilter(unittest.TestCase):
     def test_looking_up_item(self):
         self.bloomFilter.add("test")
         self.assertTrue(self.bloomFilter.lookup("test"))
-
-    # def test_hashing_item(self):
-    #     self.assertEquals(self.bloomFilter._hashItem("test"), [499, 721, 821, 4285, 8380, 6476, 6847])
 
     def test_correct_lookups(self):
         for i in xrange(100):
