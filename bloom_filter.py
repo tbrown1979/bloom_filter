@@ -7,7 +7,6 @@ class HashGenerator:
 
     def __init__(self):
         self.uniqueKey = 0
-        self.salt = "salty"
 
     def generateHash(self, m):
         unique = self.uniqueKey
