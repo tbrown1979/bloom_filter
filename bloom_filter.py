@@ -11,7 +11,7 @@ class HashGenerator:
     def generateHash(self, m):
         unique = self.uniqueKey
         randSalt = list("this will be random")
-        shuffle(randSalt)
+        shuffle(randSalt)#4 lines to shuffle a string!
         randSalt = ''.join(randSalt)
         def hashFunction(item):
             hashed = sha1(str(unique) + randSalt + str(item)).hexdigest()
@@ -63,10 +63,6 @@ class BloomFilter:
         for i in xrange(m):
             freshFilter.append(0)
         return freshFilter
-
-    # def _getNumHashesWithFixedM(self, m, n):
-    #     output = ceil(log(2) * m / n)
-    #     return output
 
     def _calculateBloomFilterSettings(self):
         bestK = 1
