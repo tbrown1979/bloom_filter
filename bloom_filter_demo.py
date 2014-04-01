@@ -24,11 +24,15 @@ def bloomFilterDemo():
 
     bloomFilter = BloomFilter(n=10000)
     bloomFilter.addByList(membershipSet)
+    print "False Positive Rate at 0.01%:", testFalsePositiveRate(testSet, bloomFilter)
 
 def testFalsePositiveRate(testSet, bloomFilter):
     length = len(testSet)
+    amtTrue = 0.0
     for item in testSet:
-        return
+        if bloomFilter.lookup(item):
+            amtTrue += 1
+    return round(amtTrue/length, 5)
 
 
 bloomFilterDemo()
