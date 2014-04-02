@@ -7,7 +7,7 @@ class HashGenerator:
 
     def generateHash(self, m):
         randSalt = list("this will be random")
-        shuffle(randSalt)#4 lines to shuffle a string!
+        shuffle(randSalt)
         randSalt = ''.join(randSalt)
         def hashFunction(item):
             hashed = sha1(randSalt + str(item)).hexdigest()
