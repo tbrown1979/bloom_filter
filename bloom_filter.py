@@ -54,10 +54,7 @@ class BloomFilter:
         return hashes
 
     def _createFreshFilter(self, m):
-        freshFilter = array('b')
-        for i in xrange(m):
-            freshFilter.append(0)
-        return freshFilter
+        return array('b', [0] * m)
 
     def _calculateBloomFilterSettings(self):
         bestK = 1
