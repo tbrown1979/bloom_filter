@@ -3,7 +3,6 @@ from random import randint
 from bloom_filter import *
 
 class DemoSetGenerator:
-
     def __init__(self):
         lgSet = self.generateUniqueList(20000, 10000, 99999)
         self.membershipSet = lgSet[0:10000]
@@ -15,7 +14,6 @@ class DemoSetGenerator:
         while len(mSet) < maxLen:
             mSet.add(randint(m, n))
         return list(mSet)
-
 
 def testFalsePositiveRate(testSet, bloomFilter):
     length = len(testSet)
@@ -34,10 +32,10 @@ def reportTest(falsePos, length, memSet, testSet, multiplier=1):
     print
 
 def bloomFilterDemo():
-    setGenerator = DemoSetGenerator()
+    setGenerator  = DemoSetGenerator()
     membershipSet = setGenerator.membershipSet
-    testSet = setGenerator.testSet
-    length = len(membershipSet)
+    testSet       = setGenerator.testSet
+    length        = len(membershipSet)
 
     reportTest(.01,   length, membershipSet, testSet)
     reportTest(.001,  length, membershipSet, testSet)

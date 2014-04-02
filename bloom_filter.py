@@ -5,19 +5,14 @@ from random import shuffle
 
 class HashGenerator:
 
-    def __init__(self):
-        self.uniqueKey = 0
-
     def generateHash(self, m):
-        unique = self.uniqueKey
         randSalt = list("this will be random")
         shuffle(randSalt)#4 lines to shuffle a string!
         randSalt = ''.join(randSalt)
         def hashFunction(item):
-            hashed = sha1(str(unique) + randSalt + str(item)).hexdigest()
+            hashed = sha1(randSalt + str(item)).hexdigest()
             num = int(hashed[0:8], 16) % m
             return int(num)
-        self.uniqueKey += 1
         return hashFunction
 
 class BloomFilter:

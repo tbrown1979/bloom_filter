@@ -2,6 +2,7 @@ import random
 import unittest
 from bloom_filter import *
 from array import array
+from math import *
 
 class TestBloomFilter(unittest.TestCase):
 
@@ -14,7 +15,7 @@ class TestBloomFilter(unittest.TestCase):
         self.assertEqual(self.bloomFilter.length, self.bloomFilterLength)
 
     def test_vector_length_with_multiplier(self):
-        self.assertEqual(self.largeBloomFilter.length, self.bloomFilterLength * 1.5)
+        self.assertEqual(self.largeBloomFilter.length, ceil(self.bloomFilterLength * 1.5))
 
     def test_num_of_hashes(self):
         self.assertEqual(self.bloomFilter.numOfHashes, 7)
