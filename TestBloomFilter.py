@@ -8,8 +8,9 @@ class TestBloomFilter(unittest.TestCase):
 
     def setUp(self):
         self.bloomFilter = BloomFilter()
-        self.bloomFilterLength = 9593
+        self.bloomFilterLength = 9585
         self.largeBloomFilter = BloomFilter(multiplier=1.5)
+        self.smallFilter = BloomFilter(n=5, m=10)
 
     def test_vector_length(self):
         self.assertEqual(self.bloomFilter.length, self.bloomFilterLength)
@@ -21,14 +22,14 @@ class TestBloomFilter(unittest.TestCase):
         self.assertEqual(self.bloomFilter.numOfHashes, 7)
 
     def test_large_filter_array(self):
-        self.assertEqual(self.bloomFilter.bFilter, array('b', [0]*self.bloomFilterLength))
+        self.assertEqual(self.bloomFilter.vector, array('b', [0]*self.bloomFilterLength))
 
     def test_hashes_length(self):
         self.assertEqual(len(self.bloomFilter.hashes), 7)
 
     def test_adding_item(self):
         self.bloomFilter.add("test")
-        self.assertTrue(self.bloomFilter.bFilter.count(1),1)
+        self.assertTrue(self.bloomFilter.vector.count(1),1)
 
     def test_looking_up_item(self):
         self.bloomFilter.add("test")
@@ -47,8 +48,20 @@ class TestBloomFilter(unittest.TestCase):
         self.bloomFilter.addByList(range(1,1001))
         self.assertEquals(self.bloomFilter.amtOfItems, 1000)
 
-    def test_calcutlating_k_and_m(self):
-        self.assertEquals(self.bloomFilter._calculateBloomFilterSettings(), (9593.0, 7))
+    def test_gets_correct_num_of_hashes(self):
+        self.assertEqual(self.bloomFilter._calculateNumOfHashes(self.bloomFilterLength, 1000), 7)
+
+    def test_gets_optimal_m(self):
+        self.assertEqual(self.bloomFilter._calculateLength(.01, 1000), self.bloomFilterLength)
+
+    def test_small_filter_array(self):
+        self.assertEqual(self.smallFilter.vector, array('b', [0]*10))
+
+    def test_small_filter_hashes(self):#2 because we take the ceil
+        self.assertEqual(self.smallFilter.numOfHashes, 2)
+
+    def test_small_vector_length(self):
+        self.assertEqual(self.smallFilter.length, 10)
 
 class TestHashGenerator(unittest.TestCase):
 

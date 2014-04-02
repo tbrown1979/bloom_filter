@@ -17,20 +17,24 @@ class HashGenerator:
 
 class BloomFilter:
 
-    def __init__(self, c=0.01, n=1000, multiplier=1):
+    def __init__(self, c=0.01, n=1000, multiplier=1, m=None):
         self.amtOfItems   = 0
         self.falsePosRate = c
-        self.numOfKeys    = n
-        self.length, self.numOfHashes = self._calculateBloomFilterSettings()
-        self.length  = ceil(self.length * multiplier)
-        self.bFilter = self._createFreshFilter(int(self.length))
-        self.hashes  = self._generateHashes()
+        self.numOfKeys    = n        
+        if m == None:
+            self.length = self._calculateLength(self.falsePosRate, self.numOfKeys)
+        else:
+            self.length = m
+        self.numOfHashes  = self._calculateNumOfHashes(self.length, self.numOfKeys)
+        self.length       = ceil(self.length * multiplier)
+        self.vector       = self._createFreshFilter(int(self.length))
+        self.hashes       = self._generateHashes()
 
     def lookup(self, item):
         indexes = self._hashItem(item)
         found = True
         for i in indexes:
-            if self.bFilter[i] == 0:
+            if self.vector[i] == 0:
                 found = False
                 break
         return found
@@ -56,18 +60,14 @@ class BloomFilter:
     def _createFreshFilter(self, m):
         return array('b', [0] * m)
 
-    def _calculateBloomFilterSettings(self):
-        bestK = 1
-        lowestM = None
-        for num in xrange(1,101):
-            m = (-1.0 * num * self.numOfKeys) / (log( 1 - (self.falsePosRate ** (1.0/num))))
-            if m < lowestM or lowestM == None:
-                lowestM = m
-                bestK = num
-        return (ceil(lowestM), bestK)
+    def _calculateNumOfHashes(self, m, n):
+        return int(ceil((m / n) * .7))
+
+    def _calculateLength(self, c, n):
+        return abs(int(ceil((n * log(c)) / log(2) ** 2)))
 
     def __flipBits(self, bitsToFlip):
         [self.__flipBit(int(i)) for i in bitsToFlip]
 
     def __flipBit(self, bitIndex):
-        self.bFilter[bitIndex] = 1
+        self.vector[bitIndex] = 1
