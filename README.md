@@ -1,6 +1,6 @@
 bloom_filter
 ============
-n = 10000
+      n = 10000
 
       False Positive Rate at 1.0% resulted in: 0.88%
       Collisions at 1.0%: 88.0
